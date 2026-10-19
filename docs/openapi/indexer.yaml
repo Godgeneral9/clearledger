@@ -174,8 +174,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PaginatedInvoices"
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "429":
           $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       tags: [Invoices]
       summary: Create invoice
@@ -205,8 +209,14 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "401":
           $ref: "#/components/responses/Unauthorized"
+        "413":
+          $ref: "#/components/responses/RequestEntityTooLarge"
         "429":
           $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "504":
+          $ref: "#/components/responses/GatewayTimeout"
 
   /invoices/{id}:
     get:
@@ -229,6 +239,10 @@ paths:
                 $ref: "#/components/schemas/Invoice"
         "404":
           $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
   /stats:
     get:
@@ -259,6 +273,8 @@ paths:
                 $ref: "#/components/schemas/PoolStats"
         "429":
           $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
   /pool/position/{address}:
     get:
@@ -279,8 +295,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LPPosition"
-        "404":
-          $ref: "#/components/responses/NotFound"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
   /metrics:
     get:
@@ -320,6 +340,10 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/PoolSnapshot"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
   /webhooks:
     post:
@@ -398,6 +422,24 @@ components:
             type: string
     NotFound:
       description: Resource not found
+      content:
+        text/plain:
+          schema:
+            type: string
+    RequestEntityTooLarge:
+      description: Request body exceeds the endpoint's size limit
+      content:
+        text/plain:
+          schema:
+            type: string
+    InternalServerError:
+      description: Internal server error
+      content:
+        text/plain:
+          schema:
+            type: string
+    GatewayTimeout:
+      description: The submitted transaction was not confirmed before the polling budget expired
       content:
         text/plain:
           schema:

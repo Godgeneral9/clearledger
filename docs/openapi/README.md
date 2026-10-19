@@ -22,6 +22,18 @@ The OpenAPI 3.0 specification for the Go indexer/API lives in [`indexer.yaml`](.
 | GET    | `/webhooks`                | JWT  | List webhook subscriptions        |
 | DELETE | `/webhooks/{id}`           | JWT  | Delete webhook subscription       |
 
+## Contract tests
+
+Representative invoice, pool and auth responses are validated against the
+schemas, status codes, content types and required fields in `indexer.yaml`:
+
+```bash
+cd indexer && go test ./api -run 'TestOpenAPI(Invoice|Pool|Auth)ResponsesMatchSpec' -v
+```
+
+The contract tests fail with the JSON path and expected type when a handler
+response and the checked-in spec drift apart.
+
 ## Linting
 
 Validate the spec with [Redocly CLI](https://redocly.com/docs/cli/):

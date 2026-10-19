@@ -34,6 +34,7 @@ type APIHandler struct {
 	// package can override individual fields to avoid requiring a live DB
 	// or Soroban RPC.
 	getInvoiceByIDFn   func(context.Context, string) (*db.DbInvoice, error)
+	getInvoicesPageFn  func(context.Context, string, string, int, int) ([]*db.DbInvoice, int, error)
 	getPoolStatsFn     func(context.Context) (*db.DbPoolStats, error)
 	getPoolSnapshotsFn func(context.Context, int) ([]*db.DbPoolSnapshotHistory, error)
 	getRecentEventsFn  func(context.Context, int) ([]*db.EventLog, error)
@@ -54,6 +55,7 @@ func NewAPIHandler(cfg *config.Config) (*APIHandler, error) {
 		getInvoiceByIDFn: func(ctx context.Context, id string) (*db.DbInvoice, error) {
 			return db.GetInvoiceByID(ctx, db.Pool, id)
 		},
+		getInvoicesPageFn:  db.GetInvoicesPage,
 		getPoolStatsFn:     db.GetPoolStats,
 		getPoolSnapshotsFn: db.GetPoolSnapshotHistory,
 		getRecentEventsFn:  db.GetRecentEvents,

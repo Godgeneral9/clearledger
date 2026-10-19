@@ -181,12 +181,18 @@ func TestHandlePostAuth_ValidChallenge(t *testing.T) {
 		t.Fatalf("verify challenge: got %d: %s", postW.Code, postW.Body.String())
 	}
 
-	var tokenResp map[string]string
+	var tokenResp struct {
+		Token     string `json:"token"`
+		ExpiresIn int    `json:"expires_in"`
+	}
 	if err := json.NewDecoder(postW.Body).Decode(&tokenResp); err != nil {
 		t.Fatalf("decode token response: %v", err)
 	}
-	if tokenResp["token"] == "" {
+	if tokenResp.Token == "" {
 		t.Error("response missing 'token' field")
+	}
+	if tokenResp.ExpiresIn <= 0 {
+		t.Errorf("response missing a positive 'expires_in' field, got %d", tokenResp.ExpiresIn)
 	}
 }
 

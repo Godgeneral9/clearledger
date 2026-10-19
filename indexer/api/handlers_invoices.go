@@ -66,7 +66,7 @@ func (h *APIHandler) HandleGetInvoices(w http.ResponseWriter, r *http.Request) {
 
 	offset := (page - 1) * limit
 
-	invoices, total, err := db.GetInvoicesPage(r.Context(), status, issuer, limit, offset)
+	invoices, total, err := h.getInvoicesPageFn(r.Context(), status, issuer, limit, offset)
 	if err != nil {
 		// The raw DB error can disclose table/column names; log it and return
 		// a generic message (issue #921).
