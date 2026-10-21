@@ -376,11 +376,11 @@ func TestOpenAPIInvoiceResponsesMatchSpec(t *testing.T) {
 
 	t.Run("GET /invoices success", func(t *testing.T) {
 		h := readonlyTestHandler(t)
-		h.getInvoicesPageFn = func(_ context.Context, status, issuer string, limit, offset int) ([]*db.DbInvoice, int, error) {
+		h.getInvoicesPageFn = func(_ context.Context, status, issuer, buyer string, dueDate *int64, limit, offset int, cursor *db.InvoiceCursor) ([]*db.DbInvoice, int, bool, error) {
 			if limit != 20 || offset != 0 {
 				t.Errorf("expected default pagination limit=20 offset=0, got limit=%d offset=%d", limit, offset)
 			}
-			return []*db.DbInvoice{invoice}, 1, nil
+			return []*db.DbInvoice{invoice}, 1, false, nil
 		}
 
 		rr := httptest.NewRecorder()

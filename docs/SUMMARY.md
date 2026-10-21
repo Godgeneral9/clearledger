@@ -46,6 +46,7 @@
 - [Production Readiness Gates](PRODUCTION_READINESS.md)
 - [SDK Reference](developer-guide/sdk-reference.md)
 - [Indexer API Reference](developer-guide/indexer-api-reference.md)
+- [Indexer Operations: Recovery, Backfill, and Webhook Replay](developer-guide/indexer-operations.md)
 - [Analytics Metrics and On-Chain Sources](ANALYTICS_METRICS.md)
 - [Webhooks](webhooks.md)
 - [Security Headers](developer-guide/security-headers.md)
